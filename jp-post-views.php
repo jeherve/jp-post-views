@@ -63,6 +63,7 @@ class Jeherve_Jp_Post_Views {
 		if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'stats' ) ) {
 			// Load our functions.
 			require_once( JPPOSTVIEWS__PLUGIN_DIR . 'functions.jp-post-views.php' );
+			require_once( JPPOSTVIEWS__PLUGIN_DIR . 'widgets.jp-post-views.php' );
 
 			// Add Stats to REST API Post response.
 			add_action( 'rest_api_init',  array( $this, 'rest_register_post_views' ) );
