@@ -49,6 +49,33 @@ function jp_post_views_get_view( $post_id ) {
 }
 
 /**
+ * Retrieve all time stats for your site.
+ *
+ * @since 1.0.0
+ *
+ * @return string $views All time views for that site.
+ */
+function jp_post_views_get_all_views() {
+	// Start with an empty array.
+	$views = array();
+
+	// Get the data.
+	$stats = stats_get_from_restapi( array( 'fields' => 'stats' ) );
+	if (
+		isset( $stats )
+		&& ! empty( $stats )
+		&& isset( $stats->stats )
+	) {
+		$views = array(
+			'total'     => $stats->stats->views,
+			'cached_at' => isset( $stats->cached_at ) ? $stats->cached_at : '',
+		);
+	}
+
+	return $views;
+}
+
+/**
  * Create a shortcode to display a post view inside a post.
  * Shortcode format is [jp_post_view]
  *
