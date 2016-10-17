@@ -68,10 +68,10 @@ function jp_post_views_shortcode() {
 			_n(
 				'%d view',
 				'%d views',
-				$views['total'],
+				number_format_i18n( $views['total'] ),
 				'jp-post-views'
 			)
-		), $views['total'] );
+		), number_format_i18n( $views['total'] ) );
 	} else {
 		$view = esc_html__( 'no views', 'jp-post-views' );
 	}
