@@ -87,6 +87,10 @@ function jp_post_views_display() {
 	// Get the post ID.
 	$post_id = get_the_ID();
 
+	if ( ! isset( $post_id ) || empty( $post_id ) ) {
+		return;
+	}
+
 	// Get the number of views for that post.
 	$views = jp_post_views_get_view( $post_id );
 
