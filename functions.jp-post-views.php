@@ -103,5 +103,14 @@ function jp_post_views_display() {
 		$view = esc_html__( 'no views', 'jp-post-views' );
 	}
 
-	return $view;
+	/**
+	 * Filter the output of the shortcode.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $view    Phrase outputting the number of views.
+	 * @param array  $views   Number of views.
+	 * @param string $post_id Post ID.
+	 */
+	return apply_filters( 'jp_post_views_output', $view, $views, $post_id );
 }
