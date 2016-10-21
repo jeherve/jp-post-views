@@ -83,7 +83,7 @@ function jp_post_views_get_all_views() {
  *
  * @return string $view Total number of views for that post.
  */
-function jp_post_views_shortcode() {
+function jp_post_views_display() {
 	// Get the post ID.
 	$post_id = get_the_ID();
 

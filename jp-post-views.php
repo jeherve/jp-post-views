@@ -69,7 +69,7 @@ class Jeherve_Jp_Post_Views {
 			add_action( 'rest_api_init',  array( $this, 'rest_register_post_views' ) );
 
 			// Create shortcode.
-			add_shortcode( 'jp_post_view', 'jp_post_views_shortcode' );
+			add_shortcode( 'jp_post_view', 'jp_post_views_display' );
 		} else {
 			// Prompt the user to install Jetpack.
 			add_action( 'admin_notices',  array( $this, 'install_jetpack' ) );
