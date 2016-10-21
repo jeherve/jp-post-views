@@ -98,14 +98,16 @@ class Jeherve_Jp_Post_Views {
 	 * @since 1.0.0
 	 */
 	public function rest_register_post_views() {
-		register_rest_field( 'post',
-			'views',
-			array(
-				'get_callback'    => array( $this, 'rest_get_views' ),
-				'update_callback' => array( $this, 'rest_update_views' ),
-				'schema'          => null,
-			)
-		);
+		if ( function_exists( 'register_rest_field' ) ) {
+			register_rest_field( 'post',
+				'views',
+				array(
+					'get_callback'    => array( $this, 'rest_get_views' ),
+					'update_callback' => array( $this, 'rest_update_views' ),
+					'schema'          => null,
+				)
+			);
+		}
 	}
 
 	/**
