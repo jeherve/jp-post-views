@@ -66,7 +66,9 @@ class Jeherve_Jp_Post_Views {
 			require_once( JPPOSTVIEWS__PLUGIN_DIR . 'widgets.jp-post-views.php' );
 
 			// Add Stats to REST API Post response.
-			add_action( 'rest_api_init',  array( $this, 'rest_register_post_views' ) );
+			if ( function_exists( 'register_rest_field' ) ) {
+				add_action( 'rest_api_init',  array( $this, 'rest_register_post_views' ) );
+			}
 
 			// Create shortcode.
 			add_shortcode( 'jp_post_view', 'jp_post_views_display' );
@@ -98,16 +100,14 @@ class Jeherve_Jp_Post_Views {
 	 * @since 1.0.0
 	 */
 	public function rest_register_post_views() {
-		if ( function_exists( 'register_rest_field' ) ) {
-			register_rest_field( 'post',
-				'views',
-				array(
-					'get_callback'    => array( $this, 'rest_get_views' ),
-					'update_callback' => array( $this, 'rest_update_views' ),
-					'schema'          => null,
-				)
-			);
-		}
+		register_rest_field( 'post',
+			'views',
+			array(
+				'get_callback'    => array( $this, 'rest_get_views' ),
+				'update_callback' => array( $this, 'rest_update_views' ),
+				'schema'          => null,
+			)
+		);
 	}
 
 	/**
