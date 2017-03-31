@@ -20,10 +20,13 @@ This is still a work in progress, and I would love to know what you'd like this 
 3. Activate the plugin.
 4. Enjoy! :)
 
-There are currently 2 ways to use the plugin:
+== FAQ ==
+
+= There are currently 3 ways to use the plugin =
 
 1. You can use the `[jp_post_view]` shortcode anywhere in your posts and pages to display the number of views.
 2. You can use the "All Time Site Stats" widget to display how many views your site got since you started using Jetpack Stats.
+3. You can use the shortcode in your theme files, like so: `<?php echo do_shortcode( '[jp_post_view]' ); ?>`
 
 == Changelog ==
 
