@@ -95,14 +95,17 @@ function jp_post_views_display() {
 	$views = jp_post_views_get_view( $post_id );
 
 	if ( isset( $views ) && ! empty( $views ) ) {
-		$view = sprintf( esc_html(
-			_n(
-				'%d view',
-				'%d views',
-				$views['total'],
-				'jp-post-views'
-			)
-		), $views['total'] );
+		$view = sprintf(
+			esc_html(
+				_n(
+					'%s view',
+					'%s views',
+					$views['total'],
+					'jp-post-views'
+				)
+			),
+			number_format_i18n( $views['total'] )
+		);
 	} else {
 		$view = esc_html__( 'no views', 'jp-post-views' );
 	}

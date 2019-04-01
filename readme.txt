@@ -1,9 +1,9 @@
 === Post Views for Jetpack ===
 Contributors: jeherve
 Tags: Stats, Views, Post Views, Jetpack
-Stable tag: 1.1.0
-Requires at least: 4.6
-Tested up to: 4.7
+Stable tag: 1.2.0
+Requires at least: 5.1
+Tested up to: 5.2
 
 Display the number of views for each one of your posts, as recorded by Jetpack Stats.
 
@@ -29,6 +29,11 @@ This is still a work in progress, and I would love to know what you'd like this 
 3. You can use the shortcode in your theme files, like so: `<?php echo do_shortcode( '[jp_post_view]' ); ?>`
 
 == Changelog ==
+
+= 1.2.0 =
+Release Date: April 2, 2019
+
+* Ensure the number of views is internationalized properly.
 
 = 1.1.0 =
 Release Date: November 18, 2016
