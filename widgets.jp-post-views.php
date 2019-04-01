@@ -82,14 +82,17 @@ if ( ! class_exists( 'Jp_Post_Views_All_Widget' ) ) {
 			$views = jp_post_views_get_all_views();
 
 			if ( isset( $views ) && ! empty( $views ) ) {
-				$stats_output = sprintf( esc_html(
-					_n(
-						'%d view',
-						'%d views',
-						$views['total'],
-						'jp-post-views'
-					)
-				), $views['total'] );
+				$stats_output = sprintf(
+					esc_html(
+						_n(
+							'%s view',
+							'%s views',
+							$views['total'],
+							'jp-post-views'
+						)
+					),
+					number_format_i18n( $views['total'] )
+				);
 			} else {
 				$stats_output = esc_html__( 'No views', 'jp-post-views' );
 			}
