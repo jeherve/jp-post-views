@@ -7,8 +7,6 @@
  * Version: 1.2.0
  * Author URI: https://jeremy.hu
  * License: GPL2+
- * Text Domain: jp-post-views
- * Domain Path: /languages/
  *
  * @package Post Views for Jetpack
  */
@@ -37,20 +35,8 @@ class Jeherve_Jp_Post_Views {
 	 * @since 1.0.0
 	 */
 	private function __construct() {
-		// Load translations.
-		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
-
 		// Load plugin.
 		add_action( 'plugins_loaded', array( $this, 'load_plugin' ) );
-	}
-
-	/**
-	 * Allow translations.
-	 *
-	 * @since 1.0.0
-	 */
-	public function load_textdomain() {
-		load_plugin_textdomain( 'jp-post-views', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
@@ -88,7 +74,7 @@ class Jeherve_Jp_Post_Views {
 	public function install_jetpack() {
 		echo '<div class="error"><p>';
 		printf(
-			__( 'To use the Post View for Jetpack plugin, you\'ll need to install and activate <a href="%s">Jetpack</a> first, and then activate the Stats module.', 'jp-post-views' ),
+			__( 'To use the Post View for Jetpack plugin, you\'ll need to install and activate <a href="%s">Jetpack</a> first, and then activate the Stats module.', 'post-views-for-jetpack' ),
 			'plugin-install.php?tab=search&s=jetpack&plugin-search-input=Search+Plugins'
 		);
 		echo '</p></div>';
@@ -141,7 +127,7 @@ class Jeherve_Jp_Post_Views {
 	public function rest_update_views( $view, $object, $field_name ) {
 
 		if ( ! isset( $view ) || empty( $view ) ) {
-			return new WP_Error( 'bad-post-view', __( 'The specified view is in an invalid format.', 'jp-post-views' ) );
+			return new WP_Error( 'bad-post-view', __( 'The specified view is in an invalid format.', 'post-views-for-jetpack' ) );
 		}
 
 		$views = array(

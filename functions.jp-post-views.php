@@ -101,13 +101,13 @@ function jp_post_views_display() {
 					'%s view',
 					'%s views',
 					$views['total'],
-					'jp-post-views'
+					'post-views-for-jetpack'
 				)
 			),
 			number_format_i18n( $views['total'] )
 		);
 	} else {
-		$view = esc_html__( 'no views', 'jp-post-views' );
+		$view = esc_html__( 'no views', 'post-views-for-jetpack' );
 	}
 
 	/**

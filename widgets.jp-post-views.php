@@ -35,12 +35,12 @@ if ( ! class_exists( 'Jp_Post_Views_All_Widget' ) ) {
 		 */
 		function __construct() {
 			$widget_ops = array(
-				'classname' => 'jp_post_views_all',
-				'description' => __( 'Display All Time Stats on your site.', 'jp-post-views' ),
+				'classname'   => 'jp_post_views_all',
+				'description' => __( 'Display All Time Stats on your site.', 'post-views-for-jetpack' ),
 			);
 			parent::__construct(
 				'jp_post_views_all',
-				esc_html__( 'All Time Site Stats', 'jp-post-views' ),
+				esc_html__( 'All Time Site Stats', 'post-views-for-jetpack' ),
 				$widget_ops
 			);
 			$this->alt_option_name = 'jp_post_views_all';
@@ -57,7 +57,7 @@ if ( ! class_exists( 'Jp_Post_Views_All_Widget' ) ) {
 		 */
 		public function defaults() {
 			return array(
-				'title'   => __( 'All Time Stats', 'jp-post-views' ),
+				'title'   => __( 'All Time Stats', 'post-views-for-jetpack' ),
 			);
 		}
 
@@ -88,13 +88,13 @@ if ( ! class_exists( 'Jp_Post_Views_All_Widget' ) ) {
 							'%s view',
 							'%s views',
 							$views['total'],
-							'jp-post-views'
+							'post-views-for-jetpack'
 						)
 					),
 					number_format_i18n( $views['total'] )
 				);
 			} else {
-				$stats_output = esc_html__( 'No views', 'jp-post-views' );
+				$stats_output = esc_html__( 'No views', 'post-views-for-jetpack' );
 			}
 
 			/**
@@ -123,8 +123,8 @@ if ( ! class_exists( 'Jp_Post_Views_All_Widget' ) ) {
 		 * @return array
 		 */
 		function update( $new_instance, $old_instance ) {
-			$instance            = array();
-			$instance['title']   = wp_kses( $new_instance['title'], array() );
+			$instance          = array();
+			$instance['title'] = wp_kses( $new_instance['title'], array() );
 			return $instance;
 		}
 
@@ -141,7 +141,7 @@ if ( ! class_exists( 'Jp_Post_Views_All_Widget' ) ) {
 
 			?>
 			<p>
-				<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'jp-post-views' ); ?></label>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title:', 'post-views-for-jetpack' ); ?></label>
 				<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 			</p>
 
