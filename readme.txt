@@ -1,7 +1,7 @@
 === Post Views for Jetpack ===
 Contributors: jeherve
 Tags: Stats, Views, Post Views, Jetpack
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 Requires at least: 5.1
 Tested up to: 5.5
 
@@ -29,6 +29,11 @@ This is still a work in progress, and I would love to know what you'd like this 
 3. You can use the shortcode in your theme files, like so: `<?php echo do_shortcode( '[jp_post_view]' ); ?>`
 
 == Changelog ==
+
+= 1.3.0 =
+Release Date: July 1, 2020
+
+* Fully rely on WordPress.org translation packs for translations.
 
 = 1.2.0 =
 Release Date: April 2, 2019
