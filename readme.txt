@@ -29,7 +29,7 @@ This is still a work in progress, and I would love to know what you'd like this 
 3. You can use the shortcode in your theme files, like so: `<?php echo do_shortcode( '[jp_post_view]' ); ?>`. If you pick that option, I would recommend using a [child theme](https://developer.wordpress.org/themes/advanced-topics/child-themes/) instead of modifying your theme's files.
 4. You can use a functionality plugin like [this one](https://wordpress.org/plugins/code-snippets/) to add a custom code snippet to your site without making changes to your theme. In that code snippet, you can decide on which pages the post views should be displayed. In the example below, the counter will be displayed at the bottom of all posts, only on posts pages.
 
-```
+`
 /**
  * Display a Stats counter at the top of every post, with a "Views:" heading.
  * @see https://wordpress.org/support/topic/page-views-off/
@@ -54,7 +54,7 @@ function jeherve_custom_display_post_views( $content ) {
 	return $content;
 }
 add_filter( 'the_content', 'jeherve_custom_display_post_views' );
-```
+`
 
 == Changelog ==
 
