@@ -22,11 +22,39 @@ This is still a work in progress, and I would love to know what you'd like this 
 
 == FAQ ==
 
-= There are currently 3 ways to use the plugin =
+= There are currently 4 ways to use the plugin =
 
 1. You can use the `[jp_post_view]` shortcode anywhere in your posts and pages to display the number of views.
 2. You can use the "All Time Site Stats" widget to display how many views your site got since you started using Jetpack Stats.
-3. You can use the shortcode in your theme files, like so: `<?php echo do_shortcode( '[jp_post_view]' ); ?>`
+3. You can use the shortcode in your theme files, like so: `<?php echo do_shortcode( '[jp_post_view]' ); ?>`. If you pick that option, I would recommend using a [child theme](https://developer.wordpress.org/themes/advanced-topics/child-themes/) instead of modifying your theme's files.
+4. You can use a functionality plugin like [this one](https://wordpress.org/plugins/code-snippets/) to add a custom code snippet to your site without making changes to your theme. In that code snippet, you can decide on which pages the post views should be displayed. In the example below, the counter will be displayed at the bottom of all posts, only on posts pages.
+
+```
+/**
+ * Display a Stats counter at the top of every post, with a "Views:" heading.
+ * @see https://wordpress.org/support/topic/page-views-off/
+ *
+ * @param string $content Post content.
+ */
+function jeherve_custom_display_post_views( $content ) {
+	$post_views = sprintf(
+		'<div class="stats_counter sd-content"><h3 class="sd-title">%1$s</h3><div class="sd-content">%2$s</div></div>',
+		esc_html__( 'Views:', 'jetpack' ),
+		esc_html( do_shortcode( '[jp_post_view]') )
+	);
+
+	/*
+	 * Add to the bottom of each single post
+	 * but not on pages or on the homepage.
+	 */
+	if ( is_singular( 'post' ) ) {
+		return $content . $post_views;
+	}
+
+	return $content;
+}
+add_filter( 'the_content', 'jeherve_custom_display_post_views' );
+```
 
 == Changelog ==
 
