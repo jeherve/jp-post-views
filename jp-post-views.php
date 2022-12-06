@@ -4,16 +4,19 @@
  * Plugin URI: https://jeremy.hu/jetpack-post-views/
  * Description: Display the number of views for each one of your posts, as recorded by Jetpack Stats.
  * Author: Jeremy Herve
- * Version: 1.3.0
+ * Version: 1.4.0
  * Author URI: https://jeremy.hu
  * License: GPL2+
+ *
+ * Requires at least: 6.0
+ * Requires PHP: 5.6
  *
  * @package Post Views for Jetpack
  */
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-define( 'JPPOSTVIEWS__VERSION',    '1.2.0' );
+define( 'JPPOSTVIEWS__VERSION',    '1.4.0' );
 define( 'JPPOSTVIEWS__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 /**
@@ -47,6 +50,12 @@ class Jeherve_Jp_Post_Views {
 	public function load_plugin() {
 		// Check if Jetpack is active, and if the Stats module is used.
 		if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'stats' ) ) {
+			if ( defined( 'JETPACK__VERSION' ) && version_compare( JETPACK__VERSION, '11.5', '<' ) ) {
+				// Prompt the user to update Jetpack.
+				add_action( 'admin_notices',  array( $this, 'update_jetpack' ) );
+				return;
+			}
+
 			// Load our functions.
 			require_once( JPPOSTVIEWS__PLUGIN_DIR . 'functions.jp-post-views.php' );
 			require_once( JPPOSTVIEWS__PLUGIN_DIR . 'widgets.jp-post-views.php' );
@@ -62,6 +71,19 @@ class Jeherve_Jp_Post_Views {
 			// Prompt the user to install Jetpack.
 			add_action( 'admin_notices',  array( $this, 'install_jetpack' ) );
 		}
+	}
+
+	/**
+	 * Prompt to update Jetpack.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @echo Notice that you need to update the Jetpack plugin.
+	 */
+	public function update_jetpack() {
+		echo '<div class="error"><p>';
+		esc_html_e( 'You are using an old version of the Jetpack plugin. Please update to the latest version so that the Post Views for Jetpack plugin can work properly.', 'post-views-for-jetpack' );
+		echo '</p></div>';
 	}
 
 	/**
