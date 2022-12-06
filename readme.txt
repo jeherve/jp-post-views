@@ -1,9 +1,9 @@
 === Post Views for Jetpack ===
 Contributors: jeherve
 Tags: Stats, Views, Post Views, Jetpack
-Stable tag: 1.3.0
-Requires at least: 5.1
-Tested up to: 5.5
+Stable tag: 1.4.0
+Requires at least: 6.0
+Tested up to: 6.1
 
 Display the number of views for each one of your posts, as recorded by Jetpack Stats.
 
@@ -30,6 +30,11 @@ This is still a work in progress, and I would love to know what you'd like this 
 4. You can use a functionality plugin like [this one](https://wordpress.org/plugins/code-snippets/) to add a custom code snippet to your site without making changes to your theme. In that code snippet, you can decide on which pages the post views should be displayed. In [this example](https://gist.github.com/jeherve/6328c232f91977a6924805d93490c152), the counter will be displayed at the bottom of all posts, only on posts pages.
 
 == Changelog ==
+
+= 1.4.0 =
+Release Date: December 6, 2022
+
+* Ensure full compatibility with Jetpack version 11.5 and above.
 
 = 1.3.0 =
 Release Date: July 1, 2020

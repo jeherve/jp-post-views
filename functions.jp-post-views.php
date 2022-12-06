@@ -6,6 +6,8 @@
  * @since 1.0.0
  */
 
+use Automattic\Jetpack\Stats\WPCOM_Stats;
+
 /**
  * Retrieve Post Views for a post, using the WordPress.com Stats API.
  *
@@ -19,19 +21,11 @@ function jp_post_views_get_view( $post_id ) {
 	// Start with an empty array.
 	$view = array();
 
-	// Return early if we use a too old version of Jetpack.
-	if ( ! function_exists( 'stats_get_from_restapi' ) ) {
-		return;
-	}
-
-	// Build our sub-endpoint to get stats for a specific post.
-	$endpoint = sprintf(
-		'post/%d',
-		$post_id
+	// Get the data for a specific post.
+	$stats = jp_post_views_convert_stats_array_to_object(
+		( new WPCOM_Stats() )->get_post_views( (int) $post_id )
 	);
 
-	// Get the data.
-	$stats = stats_get_from_restapi( array( 'fields' => 'views' ), $endpoint );
 	// Process that data.
 	if (
 		isset( $stats )
@@ -60,7 +54,10 @@ function jp_post_views_get_all_views() {
 	$views = array();
 
 	// Get the data.
-	$stats = stats_get_from_restapi( array( 'fields' => 'stats' ) );
+	$stats = jp_post_views_convert_stats_array_to_object(
+		( new WPCOM_Stats() )->get_stats( array( 'fields' => 'stats' ) )
+	);
+
 	if (
 		isset( $stats )
 		&& ! empty( $stats )
@@ -120,4 +117,24 @@ function jp_post_views_display() {
 	 * @param string $post_id Post ID.
 	 */
 	return apply_filters( 'jp_post_views_output', $view, $views, $post_id );
+}
+
+/**
+ * Convert stats array to object after sanity checking the array is valid.
+ * Lifted from Jetpack.
+ * @see https://github.com/Automattic/jetpack/blob/8a79f5e319d5da58de1b8f0bda863957b938bf21/projects/plugins/jetpack/modules/stats.php#L1522-L1538
+ *
+ * @param  array $stats_array The stats array.
+ * @return WP_Error|Object|null
+ */
+function jp_post_views_convert_stats_array_to_object( $stats_array ) {
+
+	if ( is_wp_error( $stats_array ) ) {
+		return $stats_array;
+	}
+	$encoded_array = wp_json_encode( $stats_array );
+	if ( ! $encoded_array ) {
+		return new WP_Error( 'stats_encoding_error', 'Failed to encode stats array' );
+	}
+	return json_decode( $encoded_array );
 }
