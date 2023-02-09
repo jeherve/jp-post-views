@@ -45,12 +45,12 @@ class Jeherve_Post_Views_Admin_Cols {
 
 		if ( 'views' === $column_name ) {
 			$view_count = ! empty( $views ) && isset( $views['total'] )
-				? $views['total']
-				: 0;
+				? number_format_i18n( $views['total'] )
+				: '—';
 
 			printf(
 				'<span class="view-count">%s</span>',
-				number_format_i18n( (int) $view_count )
+				esc_html( $view_count )
 			);
 		}
 	}
