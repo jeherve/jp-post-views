@@ -19,10 +19,16 @@ class Jeherve_Post_Views_Admin_Cols {
 	 * @param array $columns - array of columns in wp-admin.
 	 */
 	public static function add_view_count_column( $columns ) {
-		$stats = $columns['stats'];
-		unset( $columns['stats'] );
+		/*
+		 * Place our colunm right after the Stats column.
+		 * by reorganizing the array a bit.
+		 */
+		if ( isset( $columns['stats'] ) ) {
+			$stats = $columns['stats'];
+			unset( $columns['stats'] );
+			$columns['stats'] = $stats;
+		}
 
-		$columns['stats'] = $stats;
 		$columns['views'] = esc_html__( 'Views', 'post-views-for-jetpack' );
 
 		return $columns;
