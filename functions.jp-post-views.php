@@ -18,7 +18,31 @@ use Automattic\Jetpack\Stats\WPCOM_Stats;
  * @return array $view Post View.
  */
 function jp_post_views_get_view( $post_id ) {
-	// Start with an empty array.
+	// Check if we have cached data.
+	$cached_view = get_post_meta( $post_id, '_post_views', true );
+
+	/**
+	 * Allow setting up your own duration for the cache.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param int $duration The duration of the cache in seconds. Default to an hour.
+	 */
+	$cache_duration = (int) apply_filters( 'jp_post_views_cache_duration', HOUR_IN_SECONDS );
+
+	// Current date timestamp.
+	$now = current_datetime()->getTimestamp();
+
+	// If we have cached data recently, return that data.
+	if (
+		! empty( $cached_view )
+		&& isset( $cached_view['cached_date'] )
+		&& ( $now - (int) $cached_view['cached_date'] ) < $cache_duration
+	) {
+		return $cached_view;
+	}
+
+	// If no cached data, or stale cached data, start with an empty array.
 	$view = array();
 
 	// Get the data for a specific post.
@@ -33,8 +57,9 @@ function jp_post_views_get_view( $post_id ) {
 		&& isset( $stats->views )
 	) {
 		$view = array(
-			'total'     => $stats->views,
-			'cached_at' => isset( $stats->cached_at ) ? $stats->cached_at : '',
+			'total'       => $stats->views,
+			'cached_at'   => isset( $stats->cached_at ) ? $stats->cached_at : '', // @to-do: deprecate this. We now use the cached_date below.
+			'cached_date' => $now,
 		);
 		update_post_meta( $post_id, '_post_views', $view );
 	}

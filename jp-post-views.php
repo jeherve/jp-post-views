@@ -4,7 +4,7 @@
  * Plugin URI: https://jeremy.hu/jetpack-post-views/
  * Description: Display the number of views for each one of your posts, as recorded by Jetpack Stats.
  * Author: Jeremy Herve
- * Version: 1.4.0
+ * Version: 1.5.0
  * Author URI: https://jeremy.hu
  * License: GPL2+
  *
@@ -16,7 +16,7 @@
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-define( 'JPPOSTVIEWS__VERSION',    '1.4.0' );
+define( 'JPPOSTVIEWS__VERSION', '1.5.0' );
 define( 'JPPOSTVIEWS__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 /**
