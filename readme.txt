@@ -3,7 +3,7 @@ Contributors: jeherve
 Tags: Stats, Views, Post Views, Jetpack
 Stable tag: 1.5.0
 Requires at least: 6.0
-Tested up to: 6.1
+Tested up to: 6.2
 
 Display the number of views for each one of your posts, as recorded by Jetpack Stats.
 
