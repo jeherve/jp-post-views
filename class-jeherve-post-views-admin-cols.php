@@ -41,6 +41,8 @@ class Jeherve_Post_Views_Admin_Cols {
 	 * @param int    $post_id - the post id.
 	 */
 	public static function view_count_edit_column( $column_name, $post_id ) {
+		require_once JPPOSTVIEWS__PLUGIN_DIR . 'functions.jp-post-views.php';
+
 		$views = jp_post_views_get_view( $post_id );
 
 		if ( 'views' === $column_name ) {
