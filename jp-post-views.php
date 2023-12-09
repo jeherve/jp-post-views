@@ -40,6 +40,9 @@ class Jeherve_Jp_Post_Views {
 	private function __construct() {
 		// Load plugin.
 		add_action( 'plugins_loaded', array( $this, 'load_plugin' ) );
+
+		// Load Admin features.
+		add_action( 'admin_init', array( $this, 'admin_init' ) );
 	}
 
 	/**
@@ -71,6 +74,17 @@ class Jeherve_Jp_Post_Views {
 			// Prompt the user to install Jetpack.
 			add_action( 'admin_notices',  array( $this, 'install_jetpack' ) );
 		}
+	}
+
+	/** Initialize admin settings */
+	public function admin_init() {
+		// Load our functions.
+		require_once( JPPOSTVIEWS__PLUGIN_DIR . 'class-jeherve-post-views-admin-cols.php' );
+
+		add_filter( 'manage_posts_columns', array( 'Jeherve_Post_Views_Admin_Cols', 'add_view_count_column' ) );
+		add_filter( 'manage_pages_columns', array( 'Jeherve_Post_Views_Admin_Cols', 'add_view_count_column' ) );
+		add_action( 'manage_posts_custom_column', array( 'Jeherve_Post_Views_Admin_Cols', 'view_count_edit_column' ), 10, 2 );
+		add_action( 'manage_pages_custom_column', array( 'Jeherve_Post_Views_Admin_Cols', 'view_count_edit_column' ), 10, 2 );
 	}
 
 	/**
