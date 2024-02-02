@@ -32,7 +32,7 @@ This is still a work in progress, and I would love to know what you'd like this 
 == Changelog ==
 
 = 2.0.0 =
-Release Date: February 2, 2024
+Release Date: February 7, 2024
 
 * Update the plugin to rely on new Stats functionality introduced in Jetpack 13.0.
 * Deprecate the `jp_post_views_cache_duration` filter. The plugin now fully relies on Jetpack's caching mechanism.
