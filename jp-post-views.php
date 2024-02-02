@@ -73,6 +73,7 @@ class Jeherve_Jp_Post_Views {
 		// Load plugin.
 		require_once( JPPOSTVIEWS__PLUGIN_DIR . 'functions.jp-post-views.php' );
 		require_once( JPPOSTVIEWS__PLUGIN_DIR . 'widgets.jp-post-views.php' );
+		require_once( JPPOSTVIEWS__PLUGIN_DIR . 'class-jeherve-post-views-admin-cols.php' );
 
 		// Add Stats to REST API Post response.
 		if ( function_exists( 'register_rest_field' ) ) {
@@ -81,6 +82,12 @@ class Jeherve_Jp_Post_Views {
 
 		// Create shortcode.
 		add_shortcode( 'jp_post_view', 'jp_post_views_display' );
+
+		// Add a new column to post and page admin screens, displaying the number of views.
+		add_filter( 'manage_posts_columns', array( 'Jeherve_Post_Views_Admin_Cols', 'add_view_count_column' ) );
+		add_filter( 'manage_pages_columns', array( 'Jeherve_Post_Views_Admin_Cols', 'add_view_count_column' ) );
+		add_action( 'manage_posts_custom_column', array( 'Jeherve_Post_Views_Admin_Cols', 'view_count_edit_column' ), 10, 2 );
+		add_action( 'manage_pages_custom_column', array( 'Jeherve_Post_Views_Admin_Cols', 'view_count_edit_column' ), 10, 2 );
 	}
 
 	/**

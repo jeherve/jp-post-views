@@ -36,6 +36,7 @@ Release Date: February 2, 2024
 
 * Update the plugin to rely on new Stats functionality introduced in Jetpack 13.0.
 * Deprecate the `jp_post_views_cache_duration` filter. The plugin now fully relies on Jetpack's caching mechanism.
+* Add a new column to post and page admin screens, displaying the number of views.
 
 = 1.5.0 =
 Release Date: February 9, 2023
