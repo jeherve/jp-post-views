@@ -20,7 +20,7 @@ use Automattic\Jetpack\Stats\WPCOM_Stats;
 function jp_post_views_get_view( $post_id ) {
 	/**
 	 * Allow setting up your own duration for the cache.
-	 * 
+	 *
 	 * @deprecated 2.0.0 This filter is no longer necessary, it is done within the Jetpack plugin now.
 	 *
 	 * @since 1.5.0
