@@ -20,8 +20,10 @@ class Jeherve_Post_Views_Admin_Cols {
 	 */
 	public static function add_view_count_column( $columns ) {
 		/*
-		 * Place our colunm right after the Stats column.
-		 * by reorganizing the array a bit.
+		 * Place our colunm right after Jetpack's own Stats column.
+		 * Jetpack's Stats column and our "views" column are related, after all.
+		 * They need to be close to each other.
+		 * Let's reorganize the array a bit.
 		 */
 		if ( isset( $columns['stats'] ) ) {
 			$stats = $columns['stats'];
