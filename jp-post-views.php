@@ -55,7 +55,7 @@ class Jeherve_Jp_Post_Views {
 		}
 
 		// Prompt to update Jetpack if necessary.
-		if ( defined( 'JETPACK__VERSION' ) && version_compare( JETPACK__VERSION, '13.0', '<' ) ) {
+		if ( defined( 'JETPACK__VERSION' ) && version_compare( JETPACK__VERSION, '13.1', '<' ) ) {
 			// Prompt the user to update Jetpack.
 			add_action( 'admin_notices',  array( $this, 'update_jetpack' ) );
 			return;
