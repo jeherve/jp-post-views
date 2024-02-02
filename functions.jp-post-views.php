@@ -24,16 +24,23 @@ function jp_post_views_get_view( $post_id ) {
 	 * @deprecated 2.0.0 This filter is no longer necessary, it is done within the Jetpack plugin now.
 	 *
 	 * @since 1.5.0
+	 * @since 2.0.0 Use jetpack_fetch_stats_cache_expiration instead. Default changes to 5 minutes.
 	 *
-	 * @param int $duration The duration of the cache in seconds. Default to an hour.
+	 * @param int $duration The duration of the cache in seconds. Default to an hour in the past, now 5 minutes.
 	 */
 	$cache_duration = (int) apply_filters_deprecated(
 		'jp_post_views_cache_duration',
-		array( HOUR_IN_SECONDS ),
-		'2.0.0',
 		'',
-		esc_html__( 'Caching this data is no longer necessary, it is done within the Jetpack plugin now.', 'post-views-for-jetpack' )
+		'2.0.0',
+		'jetpack_fetch_stats_cache_expiration',
+		esc_html__( 'You can now cache the data within the Jetpack plugin now, by specifying a number of minutes.', 'post-views-for-jetpack' )
 	);
+	if ( ! empty( $cache_duration ) ) {
+		add_filter( 'jetpack_fetch_stats_cache_expiration', function() use ( $cache_duration ) {
+			return $cache_duration / MINUTE_IN_SECONDS;
+		} );
+	}
+	
 
 	// Get the data for a specific post.
 	$stats = jp_post_views_convert_stats_array_to_object(
