@@ -84,10 +84,10 @@ class Jeherve_Jp_Post_Views {
 		add_shortcode( 'jp_post_view', 'jp_post_views_display' );
 
 		// Add a new column to post and page admin screens, displaying the number of views.
-		add_filter( 'manage_posts_columns', array( 'Jeherve_Post_Views_Admin_Cols', 'add_view_count_column' ) );
-		add_filter( 'manage_pages_columns', array( 'Jeherve_Post_Views_Admin_Cols', 'add_view_count_column' ) );
-		add_action( 'manage_posts_custom_column', array( 'Jeherve_Post_Views_Admin_Cols', 'view_count_edit_column' ), 10, 2 );
-		add_action( 'manage_pages_custom_column', array( 'Jeherve_Post_Views_Admin_Cols', 'view_count_edit_column' ), 10, 2 );
+		add_filter( 'manage_posts_columns', array( 'Jeherve_Post_Views_Admin_Cols', 'add_view_count_column' ), 20 );
+		add_filter( 'manage_pages_columns', array( 'Jeherve_Post_Views_Admin_Cols', 'add_view_count_column' ), 20 );
+		add_action( 'manage_posts_custom_column', array( 'Jeherve_Post_Views_Admin_Cols', 'view_count_edit_column' ), 20, 2 );
+		add_action( 'manage_pages_custom_column', array( 'Jeherve_Post_Views_Admin_Cols', 'view_count_edit_column' ), 20, 2 );
 	}
 
 	/**
