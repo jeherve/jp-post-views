@@ -4,19 +4,19 @@
  * Plugin URI: https://jeremy.hu/jetpack-post-views/
  * Description: Display the number of views for each one of your posts, as recorded by Jetpack Stats.
  * Author: Jeremy Herve
- * Version: 1.5.0
+ * Version: 2.0.0
  * Author URI: https://jeremy.hu
  * License: GPL2+
  *
- * Requires at least: 6.0
- * Requires PHP: 5.6
+ * Requires at least: 6.4
+ * Requires PHP: 7.0
  *
  * @package Post Views for Jetpack
  */
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-define( 'JPPOSTVIEWS__VERSION', '1.5.0' );
+define( 'JPPOSTVIEWS__VERSION', '2.0.0' );
 define( 'JPPOSTVIEWS__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 /**
@@ -48,29 +48,46 @@ class Jeherve_Jp_Post_Views {
 	 * @since 1.0.0
 	 */
 	public function load_plugin() {
-		// Check if Jetpack is active, and if the Stats module is used.
-		if ( class_exists( 'Jetpack' ) && Jetpack::is_module_active( 'stats' ) ) {
-			if ( defined( 'JETPACK__VERSION' ) && version_compare( JETPACK__VERSION, '11.5', '<' ) ) {
-				// Prompt the user to update Jetpack.
-				add_action( 'admin_notices',  array( $this, 'update_jetpack' ) );
-				return;
-			}
-
-			// Load our functions.
-			require_once( JPPOSTVIEWS__PLUGIN_DIR . 'functions.jp-post-views.php' );
-			require_once( JPPOSTVIEWS__PLUGIN_DIR . 'widgets.jp-post-views.php' );
-
-			// Add Stats to REST API Post response.
-			if ( function_exists( 'register_rest_field' ) ) {
-				add_action( 'rest_api_init',  array( $this, 'rest_register_post_views' ) );
-			}
-
-			// Create shortcode.
-			add_shortcode( 'jp_post_view', 'jp_post_views_display' );
-		} else {
+		if ( ! class_exists( 'Jetpack' ) ) {
 			// Prompt the user to install Jetpack.
 			add_action( 'admin_notices',  array( $this, 'install_jetpack' ) );
+			return;
 		}
+
+		// Prompt to update Jetpack if necessary.
+		if ( defined( 'JETPACK__VERSION' ) && version_compare( JETPACK__VERSION, '13.1', '<' ) ) {
+			// Prompt the user to update Jetpack.
+			add_action( 'admin_notices',  array( $this, 'update_jetpack' ) );
+			return;
+		}
+
+
+		// Prompt the user to activate the Stats module if it's not active.
+		$jetpack_modules   = new Automattic\Jetpack\Modules();
+		$stats_active      = $jetpack_modules->is_active( 'stats' );
+		if ( ! $stats_active ) {
+			add_action( 'admin_notices',  array( $this, 'activate_stats' ) );
+			return;
+		}
+
+		// Load plugin.
+		require_once( JPPOSTVIEWS__PLUGIN_DIR . 'functions.jp-post-views.php' );
+		require_once( JPPOSTVIEWS__PLUGIN_DIR . 'widgets.jp-post-views.php' );
+		require_once( JPPOSTVIEWS__PLUGIN_DIR . 'class-jeherve-post-views-admin-cols.php' );
+
+		// Add Stats to REST API Post response.
+		if ( function_exists( 'register_rest_field' ) ) {
+			add_action( 'rest_api_init',  array( $this, 'rest_register_post_views' ) );
+		}
+
+		// Create shortcode.
+		add_shortcode( 'jp_post_view', 'jp_post_views_display' );
+
+		// Add a new column to post and page admin screens, displaying the number of views.
+		add_filter( 'manage_posts_columns', array( 'Jeherve_Post_Views_Admin_Cols', 'add_view_count_column' ), 20 );
+		add_filter( 'manage_pages_columns', array( 'Jeherve_Post_Views_Admin_Cols', 'add_view_count_column' ), 20 );
+		add_action( 'manage_posts_custom_column', array( 'Jeherve_Post_Views_Admin_Cols', 'view_count_edit_column' ), 20, 2 );
+		add_action( 'manage_pages_custom_column', array( 'Jeherve_Post_Views_Admin_Cols', 'view_count_edit_column' ), 20, 2 );
 	}
 
 	/**
@@ -96,8 +113,22 @@ class Jeherve_Jp_Post_Views {
 	public function install_jetpack() {
 		echo '<div class="error"><p>';
 		printf(
-			__( 'To use the Post View for Jetpack plugin, you\'ll need to install and activate <a href="%s">Jetpack</a> first, and then activate the Stats module.', 'post-views-for-jetpack' ),
+			__( 'To use the Post Views for Jetpack plugin, you\'ll need to install and activate <a href="%s">Jetpack</a> first, and then activate the Stats module.', 'post-views-for-jetpack' ),
 			'plugin-install.php?tab=search&s=jetpack&plugin-search-input=Search+Plugins'
+		);
+		echo '</p></div>';
+	}
+
+	/**
+	 * Prompt to activate the Stats module.
+	 *
+	 * @since 2.0.0
+	 */
+	public function activate_stats() {
+		echo '<div class="error"><p>';
+		printf(
+			__( 'To use the Post Views for Jetpack plugin, <a href="%s">you\'ll need to activate Jetpack’s Stats feature</a>.', 'post-views-for-jetpack' ),
+			'admin.php?page=jetpack#/traffic?term=stats'
 		);
 		echo '</p></div>';
 	}

@@ -15,56 +15,39 @@ use Automattic\Jetpack\Stats\WPCOM_Stats;
  *
  * @param string $post_id Post ID.
  *
- * @return array $view Post View.
+ * @return int $view Post View.
  */
 function jp_post_views_get_view( $post_id ) {
-	// Check if we have cached data.
-	$cached_view = get_post_meta( $post_id, '_post_views', true );
-
 	/**
 	 * Allow setting up your own duration for the cache.
 	 *
-	 * @since 1.5.0
+	 * @deprecated 2.0.0 This filter is no longer necessary, it is done within the Jetpack plugin now.
 	 *
-	 * @param int $duration The duration of the cache in seconds. Default to an hour.
+	 * @since 1.5.0
+	 * @since 2.0.0 Use jetpack_fetch_stats_cache_expiration instead. Default changes to 5 minutes.
+	 *
+	 * @param int $duration The duration of the cache in seconds. Default to an hour in the past, now 5 minutes.
 	 */
-	$cache_duration = (int) apply_filters( 'jp_post_views_cache_duration', HOUR_IN_SECONDS );
-
-	// Current date timestamp.
-	$now = current_datetime()->getTimestamp();
-
-	// If we have cached data recently, return that data.
-	if (
-		! empty( $cached_view )
-		&& isset( $cached_view['cached_date'] )
-		&& ( $now - (int) $cached_view['cached_date'] ) < $cache_duration
-	) {
-		return $cached_view;
+	$cache_duration = (int) apply_filters_deprecated(
+		'jp_post_views_cache_duration',
+		'',
+		'2.0.0',
+		'jetpack_fetch_stats_cache_expiration',
+		esc_html__( 'You can now cache the data within the Jetpack plugin now, by specifying a number of minutes.', 'post-views-for-jetpack' )
+	);
+	if ( ! empty( $cache_duration ) ) {
+		add_filter( 'jetpack_fetch_stats_cache_expiration', function() use ( $cache_duration ) {
+			return $cache_duration / MINUTE_IN_SECONDS;
+		} );
 	}
-
-	// If no cached data, or stale cached data, start with an empty array.
-	$view = array();
+	
 
 	// Get the data for a specific post.
 	$stats = jp_post_views_convert_stats_array_to_object(
-		( new WPCOM_Stats() )->get_post_views( (int) $post_id )
+		( new WPCOM_Stats() )->get_post_views( (int) $post_id, array( 'fields' => 'views' ), true )
 	);
 
-	// Process that data.
-	if (
-		isset( $stats )
-		&& ! empty( $stats )
-		&& isset( $stats->views )
-	) {
-		$view = array(
-			'total'       => $stats->views,
-			'cached_at'   => isset( $stats->cached_at ) ? $stats->cached_at : '', // @to-do: deprecate this. We now use the cached_date below.
-			'cached_date' => $now,
-		);
-		update_post_meta( $post_id, '_post_views', $view );
-	}
-
-	return $view;
+	return $stats->views ?? 0;
 }
 
 /**
@@ -72,29 +55,15 @@ function jp_post_views_get_view( $post_id ) {
  *
  * @since 1.0.0
  *
- * @return string $views All time views for that site.
+ * @return int $views All time views for that site.
  */
 function jp_post_views_get_all_views() {
-	// Start with an empty array.
-	$views = array();
-
 	// Get the data.
 	$stats = jp_post_views_convert_stats_array_to_object(
 		( new WPCOM_Stats() )->get_stats( array( 'fields' => 'stats' ) )
 	);
 
-	if (
-		isset( $stats )
-		&& ! empty( $stats )
-		&& isset( $stats->stats )
-	) {
-		$views = array(
-			'total'     => $stats->stats->views,
-			'cached_at' => isset( $stats->cached_at ) ? $stats->cached_at : '',
-		);
-	}
-
-	return $views;
+	return $stats->stats->views ?? 0;
 }
 
 /**
@@ -108,25 +77,23 @@ function jp_post_views_get_all_views() {
 function jp_post_views_display() {
 	// Get the post ID.
 	$post_id = get_the_ID();
-
-	if ( ! isset( $post_id ) || empty( $post_id ) ) {
+	if ( empty( $post_id ) ) {
 		return;
 	}
 
 	// Get the number of views for that post.
 	$views = jp_post_views_get_view( $post_id );
-
-	if ( isset( $views ) && ! empty( $views ) ) {
+	if ( ! empty( $views ) ) {
 		$view = sprintf(
 			esc_html(
 				_n(
 					'%s view',
 					'%s views',
-					$views['total'],
+					$views,
 					'post-views-for-jetpack'
 				)
 			),
-			number_format_i18n( $views['total'] )
+			number_format_i18n( $views )
 		);
 	} else {
 		$view = esc_html__( 'no views', 'post-views-for-jetpack' );

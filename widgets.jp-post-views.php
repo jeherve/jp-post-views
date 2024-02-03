@@ -81,17 +81,17 @@ if ( ! class_exists( 'Jp_Post_Views_All_Widget' ) ) {
 			// Get the Site Stats.
 			$views = jp_post_views_get_all_views();
 
-			if ( isset( $views ) && ! empty( $views ) ) {
+			if ( ! empty( $views ) ) {
 				$stats_output = sprintf(
 					esc_html(
 						_n(
 							'%s view',
 							'%s views',
-							$views['total'],
+							$views,
 							'post-views-for-jetpack'
 						)
 					),
-					number_format_i18n( $views['total'] )
+					number_format_i18n( $views )
 				);
 			} else {
 				$stats_output = esc_html__( 'No views', 'post-views-for-jetpack' );
@@ -102,10 +102,10 @@ if ( ! class_exists( 'Jp_Post_Views_All_Widget' ) ) {
 			 *
 			 * @since 1.0.0
 			 *
-			 * @param string $stats_output   Text displayed to show all time stats in the widget.
-			 * @param string $views['total'] Number of Total views on the site.
+			 * @param string $stats_output Text displayed to show all time stats in the widget.
+			 * @param int    $views        Number of Total views on the site.
 			 */
-			echo apply_filters( 'jp_post_views_all_time_stats_ouput', $stats_output, $views['total'] );
+			echo apply_filters( 'jp_post_views_all_time_stats_ouput', $stats_output, $views );
 
 			echo $args['after_widget'];
 		}
